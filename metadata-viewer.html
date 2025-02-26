@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Metadata Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #fileInfo {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 500px;
+            background: #f9f9f9;
+        }
+        img {
+            max-width: 300px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Select or Capture an Image to View EXIF Metadata</h1>
+    <input type="file" id="fileInput" accept="image/*" capture="camera">
+    <div id="fileInfo"></div>
+    <img id="preview" alt="Image Preview" style="display: none;">
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const preview = document.getElementById('preview');
+
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+            console.log(file);
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            // Read EXIF metadata
+            EXIF.getData(file, function () {
+                const exifData = EXIF.getAllTags(this);
+                fileInfo.innerHTML = `
+                    <p><strong>Name:</strong> ${file.name}</p>
+                    <p><strong>Type:</strong> ${file.type}</p>
+                    <p><strong>Size:</strong> ${formatFileSize(file.size)}</p>
+                    <p><strong>Date Taken:</strong> ${exifData.DateTimeOriginal || 'N/A'}</p>
+                    <p><strong>Camera:</strong> ${exifData.Make || 'N/A'} ${exifData.Model || ''}</p>
+                    <p><strong>Focal Length:</strong> ${exifData.FocalLength ? `${exifData.FocalLength} mm` : 'N/A'}</p>
+                    <p><strong>Exposure Time:</strong> ${exifData.ExposureTime ? `${exifData.ExposureTime} sec` : 'N/A'}</p>
+                    <p><strong>ISO:</strong> ${exifData.ISO || 'N/A'}</p>
+                    <p><strong>GPS Coordinates:</strong> ${getGPSCoordinates(exifData) || 'N/A'}</p>
+                `;
+            });
+        });
+
+        function formatFileSize(bytes) {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            if (bytes === 0) return '0 Bytes';
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getGPSCoordinates(exifData) {
+            if (exifData.GPSLatitude && exifData.GPSLongitude) {
+                const lat = convertDMSToDD(exifData.GPSLatitude, exifData.GPSLatitudeRef);
+                const lon = convertDMSToDD(exifData.GPSLongitude, exifData.GPSLongitudeRef);
+                return `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+            }
+            return null;
+        }
+
+        function convertDMSToDD(dms, ref) {
+            const [degrees, minutes, seconds] = dms;
+            let dd = degrees + minutes / 60 + seconds / 3600;
+            if (ref === 'S' || ref === 'W') dd *= -1;
+            return dd;
+        }
+    </script>
+
+</body>
+</html>
