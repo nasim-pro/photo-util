@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #imagePreview {
+            margin-top: 10px;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Image Compressor</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <br>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <br>
+    <img id="imagePreview" alt="Preview" style="display: none;">
+    <br>
+    <button id="downloadButton" style="display: none;">Download Compressed Image</button>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const downloadButton = document.getElementById('downloadButton');
+        const canvas = document.getElementById('canvas');
+
+        let compressedImageURL = '';
+
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const compressionQuality = 0.7; // Compression quality (0.0 - 1.0)
+                    const maxWidth = 800; // Max width for compression
+                    const maxHeight = 800; // Max height for compression
+
+                    let width = img.width;
+                    let height = img.height;
+
+                    // Resize if larger than max dimensions
+                    if (width > maxWidth || height > maxHeight) {
+                        const ratio = Math.min(maxWidth / width, maxHeight / height);
+                        width = width * ratio;
+                        height = height * ratio;
+                    }
+
+                    // Draw on canvas
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Convert to compressed image (JPEG format for better compression)
+                    compressedImageURL = canvas.toDataURL('image/jpeg', compressionQuality);
+
+                    // Show preview and download button
+                    imagePreview.src = compressedImageURL;
+                    imagePreview.style.display = 'block';
+                    downloadButton.style.display = 'inline-block';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        downloadButton.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = compressedImageURL;
+            link.download = 'compressed-image.jpg';
+            link.click();
+        });
+    </script>
+
+</body>
+</html>
