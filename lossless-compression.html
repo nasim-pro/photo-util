@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lossless Image Compression</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/upng-js/2.1.0/UPNG.js"></script>
+</head>
+<body>
+
+    <h1>Lossless PNG Compression</h1>
+    <input type="file" id="fileInput" accept="image/png">
+    <br><br>
+    <img id="imagePreview" style="max-width: 400px; display: none;">
+    <br>
+    <button id="downloadButton" style="display: none;">Download Compressed Image</button>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const downloadButton = document.getElementById('downloadButton');
+
+        let compressedImageURL = '';
+
+        fileInput.addEventListener('change', async () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const arrayBuffer = await file.arrayBuffer();
+            const img = new Image();
+
+            img.onload = () => {
+                imagePreview.src = URL.createObjectURL(file);
+                imagePreview.style.display = 'block';
+
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                // Compress using UPNG.js
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const rgbaArray = new Uint8Array(imageData.data.buffer);
+                const compressed = UPNG.encode([rgbaArray.buffer], canvas.width, canvas.height, 0); // Level 0 = lossless
+
+                const blob = new Blob([compressed], { type: 'image/png' });
+                compressedImageURL = URL.createObjectURL(blob);
+
+                downloadButton.style.display = 'inline-block';
+            };
+
+            img.src = URL.createObjectURL(file);
+        });
+
+        downloadButton.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = compressedImageURL;
+            link.download = 'compressed-image.png';
+            link.click();
+        });
+    </script>
+
+</body>
+</html>
