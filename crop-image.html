@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Quality Image Cropper</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        img {
+            max-width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>High-Quality Image Cropper</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <br><br>
+    <img id="image" style="display:none;">
+    <br>
+    <button id="cropButton" style="display:none;">Download Cropped Image</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const image = document.getElementById('image');
+        const cropButton = document.getElementById('cropButton');
+        let cropper;
+
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                image.src = e.target.result;
+                image.style.display = 'block';
+
+                // Destroy previous cropper instance if exists
+                if (cropper) cropper.destroy();
+
+                cropper = new Cropper(image, {
+                    aspectRatio: NaN, // Free cropping
+                    viewMode: 1,
+                    autoCropArea: 0.8,
+                    scalable: true,
+                    zoomable: true,
+                    cropBoxResizable: true,
+                    cropBoxMovable: true
+                });
+
+                cropButton.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        cropButton.addEventListener('click', () => {
+            if (!cropper) return;
+
+            // Get crop dimensions
+            const canvasData = cropper.getCanvasData();
+            const cropBoxData = cropper.getCropBoxData();
+            const ratio = canvasData.width / image.naturalWidth;
+
+            const cropWidth = cropBoxData.width / ratio;
+            const cropHeight = cropBoxData.height / ratio;
+
+            // Crop without resizing (original pixel size)
+            const croppedCanvas = cropper.getCroppedCanvas({
+                width: cropWidth,
+                height: cropHeight,
+                imageSmoothingEnabled: false // Prevent blurring
+            });
+
+            // Download as PNG (lossless)
+            croppedCanvas.toBlob((blob) => {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'cropped-image.png';
+                link.click();
+            }, 'image/png');
+        });
+    </script>
+
+</body>
+</html>
