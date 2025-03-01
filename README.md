@@ -1,6 +1,6 @@
 # Image Utility
 
-**Image Utility** is a web-based application that provides various image processing tools, including capturing, cropping, and compressing images. This tool is designed to help users efficiently handle images without losing quality.
+**Image Utility** is a web-based application that provides various image processing tools, including capturing, cropping, and compressing images. This tool is designed to help users efficiently handle images without losing quality. Click link to view: https://n451m-dev.github.io/photo-util
 
 ## Features
 
@@ -38,11 +38,6 @@
 3. Use the navigation menu to access different features.
 4. Upload, capture, crop, or compress images as needed.
 5. Download the processed images to your device.
-
-## Future Enhancements
-- Add support for more image formats.
-- Implement advanced compression settings.
-- Improve UI/UX for a seamless experience.
 
 ---
 
