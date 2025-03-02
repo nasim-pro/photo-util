@@ -94,6 +94,7 @@
         <a href="./lossy-compress.html">Lossy Compression</a>
         <a href="./metadata-viewer.html">Metadata Viewer</a>
         <a href="./crop-image.html">Crop Image</a>
+        <a href="./background-remover.html">Background Remover</a>
     </nav>
 
     <h1>Capture Photo</h1>
@@ -126,14 +127,16 @@
         });
 
         click_button.addEventListener('click', function () {
+            if(!video.srcObject) return
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
         });
 
         download.addEventListener('click', function () {
+            if(canvas.height == 150 && canvas.width == 300) return
             let anchor = document.createElement("a");
-            anchor.href = canvas.toDataURL('image/jpeg');
+            anchor.href = canvas.toDataURL('image/jpeg', 0.9);
             anchor.download = "mypicture.jpg";
             anchor.click();
         });
