@@ -1,6 +1,6 @@
 # Image Utility
 
-**Image Utility** is a web-based application that provides various image processing tools, including capturing, cropping, and compressing images. This tool is designed to help users efficiently handle images without losing quality. Click link to view: https://n451m-dev.github.io/photo-util
+**Image Utility** is a web-based application that provides various image processing tools, including capturing, cropping, and compressing images. This tool is designed to help users efficiently handle images without losing quality. Click link to view: https://nasim-pro.github.io/photo-util
 
 ## Features
 
