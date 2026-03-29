@@ -40,7 +40,7 @@
         }
 
         #flowchart-sidebar.active {
-            width: 50%;
+            width: 60%;
             /* Slides out to half-screen */
         }
 
@@ -54,9 +54,15 @@
         }
 
         #svg-canvas {
-            padding: 20px;
+            /* padding: 20px;
             display: flex;
-            justify-content: center;
+            justify-content: center; */
+            padding: 20px;
+            overflow-x: auto;
+            /* horizontal scroll */
+            overflow-y: auto;
+            white-space: nowrap;
+            /* prevents wrapping */
         }
 
         #toggle-flow-btn {
@@ -85,6 +91,17 @@
             font-weight: bold;
         }
 
+        .editor {
+            height: 65vh;
+        }
+
+        .cm-editor {
+            height: 100%;
+        }
+
+        .cm-scroller {
+            min-height: 100%;
+        }
     </style>
 </head>
 
