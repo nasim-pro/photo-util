@@ -83,10 +83,11 @@
         <a href="./lossy-compress.html">Lossy Compression</a>
         <a href="./metadata-viewer.html">Metadata Viewer</a>
         <a href="./crop-image.html">Crop Image</a>
+        <a href="./background-remover.html">Background Remover</a>
     </nav>
 
     <h1>Image Metadata Viewer</h1>
-    <p>Select or capture an image to view its EXIF metadata.</p>
+    <p>Select an image to view its metadata.</p>
     <input type="file" id="fileInput" accept="image/*" capture="camera">
 
     <div class="container">
@@ -104,10 +105,12 @@
         fileInput.addEventListener('change', () => {
             const file = fileInput.files[0];
             if (!file) return;
-
+            console.log(file);
+            
             // Show preview
             const reader = new FileReader();
             reader.onload = (e) => {
+                if (!file.type.startsWith('image/')) return
                 preview.src = e.target.result;
                 preview.style.display = 'block';
             };
