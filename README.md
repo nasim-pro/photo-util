@@ -1,44 +1,36 @@
-# Image Utility
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-**Image Utility** is a web-based application that provides various image processing tools, including capturing, cropping, and compressing images. This tool is designed to help users efficiently handle images without losing quality. Click link to view: https://nasim-pro.github.io/photo-util
+## Getting Started
 
-## Features
+First, run the development server:
 
-### 📷 Capture Image
-- Start the camera and take pictures directly from your browser.
-- Save the captured images in JPEG format.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-### ✂️ Crop Image
-- Upload an image and crop it with a customizable crop box.
-- Supports free cropping with zoom and scale options.
-- Maintains high quality with lossless cropping.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### 📉 Lossless Image Compression
-- Compress images while maintaining the original quality.
-- Uses efficient compression techniques to reduce file size.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### 🏗️ Lossy Image Compression
-- Compress images with adjustable quality settings to reduce file size.
-- Converts images to optimized JPEG format for better storage and sharing.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### 📝 Metadata Viewer
-- Extract and display metadata information from images.
-- Useful for checking image properties like dimensions, format, and EXIF data.
+## Learn More
 
-## Technologies Used
-- **HTML, CSS, JavaScript** – For the frontend and user interface.
-- **Cropper.js** – For advanced cropping features.
-- **Canvas API** – To process images directly in the browser.
-- **UPNG.js** – For lossless PNG compression.
-- **MediaDevices API** – To access the user's camera.
+To learn more about Next.js, take a look at the following resources:
 
-## Usage
-1. Clone the repository or download the project.
-2. Open `index.html` in a web browser.
-3. Use the navigation menu to access different features.
-4. Upload, capture, crop, or compress images as needed.
-5. Download the processed images to your device.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
----
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-🚀 **Image Utility** is a simple yet powerful tool for handling images efficiently. Feel free to contribute or suggest improvements!
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
