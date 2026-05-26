@@ -1,0 +1,117 @@
+"use client";
+
+import { useState } from "react";
+import EXIF from "exif-js";
+import PageContainer from "@/components/PageContainer";
+
+export default function MetadataPage() {
+    const [preview, setPreview] =
+        useState("");
+
+    const [metadata, setMetadata] =
+        useState<any>(null);
+
+    const handleFile = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file =
+            e.target.files?.[0];
+
+        if (!file) return;
+
+        setPreview(
+            URL.createObjectURL(file)
+        );
+
+        EXIF.getData(file, function () {
+            const exifData =
+                EXIF.getAllTags(this);
+
+            setMetadata({
+                name: file.name,
+                type: file.type,
+                size: (
+                    file.size /
+                    1024 /
+                    1024
+                ).toFixed(2),
+                date:
+                    exifData.DateTimeOriginal,
+                camera: `${exifData.Make || ""} ${exifData.Model || ""
+                    }`,
+                iso: exifData.ISO,
+            });
+        });
+    };
+
+    return (
+        <PageContainer
+            title="Metadata Viewer"
+            description="View image EXIF metadata."
+        >
+            <div className="metadata-layout">
+                <div className="card">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFile}
+                    />
+
+                    {preview && (
+                        <img
+                            src={preview}
+                            alt="Preview"
+                            className="preview-image"
+                        />
+                    )}
+                </div>
+
+                <div className="card">
+                    <h3>Metadata</h3>
+
+                    {metadata ? (
+                        <div className="metadata-list">
+                            <p>
+                                <strong>Name:</strong>{" "}
+                                {metadata.name}
+                            </p>
+
+                            <p>
+                                <strong>Type:</strong>{" "}
+                                {metadata.type}
+                            </p>
+
+                            <p>
+                                <strong>Size:</strong>{" "}
+                                {metadata.size} MB
+                            </p>
+
+                            <p>
+                                <strong>Camera:</strong>{" "}
+                                {metadata.camera ||
+                                    "N/A"}
+                            </p>
+
+                            <p>
+                                <strong>Date:</strong>{" "}
+                                {metadata.date ||
+                                    "N/A"}
+                            </p>
+
+                            <p>
+                                <strong>ISO:</strong>{" "}
+                                {metadata.iso ||
+                                    "N/A"}
+                            </p>
+                        </div>
+                    ) : (
+                        <p>
+                            Upload image to
+                            view metadata
+                        </p>
+                    )}
+                </div>
+            </div>
+        </PageContainer>
+    );
+}
