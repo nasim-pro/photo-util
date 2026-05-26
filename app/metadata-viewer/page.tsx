@@ -19,29 +19,97 @@ export default function MetadataPage() {
 
         if (!file) return;
 
-        setPreview(
-            URL.createObjectURL(file)
-        );
+        const imageUrl =
+            URL.createObjectURL(file);
 
-        EXIF.getData(file, function () {
-            const exifData =
-                EXIF.getAllTags(this);
+        setPreview(imageUrl);
 
+        const image =
+            new Image();
+
+        image.onload = () => {
+            (
+                EXIF as unknown as {
+                    getData: (
+                        img: HTMLImageElement,
+                        callback: () => void
+                    ) => void;
+                    getAllTags: (
+                        img: unknown
+                    ) => Record<
+                        string,
+                        unknown
+                    >;
+                }
+            ).getData(
+                image,
+                function (this: HTMLImageElement) {
+                    const exifData =
+                        (
+                            EXIF as unknown as {
+                                getAllTags: (
+                                    img: unknown
+                                ) => Record<
+                                    string,
+                                    unknown
+                                >;
+                            }
+                        ).getAllTags(
+                            this
+                        );
+
+                    setMetadata({
+                        name:
+                            file.name,
+                        type:
+                            file.type,
+                        size: (
+                            file.size /
+                            1024 /
+                            1024
+                        ).toFixed(2),
+                        date:
+                            String(
+                                exifData.DateTimeOriginal ??
+                                "N/A"
+                            ),
+                        camera: `${String(
+                            exifData.Make ??
+                            ""
+                        )} ${String(
+                            exifData.Model ??
+                            ""
+                        )}`.trim() ||
+                            "Unknown",
+                        iso: String(
+                            exifData.ISO ??
+                            "N/A"
+                        ),
+                    });
+                }
+            );
+        };
+
+        image.onerror = () => {
             setMetadata({
-                name: file.name,
-                type: file.type,
+                name:
+                    file.name,
+                type:
+                    file.type,
                 size: (
                     file.size /
                     1024 /
                     1024
                 ).toFixed(2),
-                date:
-                    exifData.DateTimeOriginal,
-                camera: `${exifData.Make || ""} ${exifData.Model || ""
-                    }`,
-                iso: exifData.ISO,
+                date: "N/A",
+                camera:
+                    "Unknown",
+                iso: "N/A",
             });
-        });
+        };
+
+        image.src =
+            imageUrl;
     };
 
     return (
