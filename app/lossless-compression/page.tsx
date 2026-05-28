@@ -3,6 +3,7 @@
 import { useState } from "react";
 import imageCompression from "browser-image-compression";
 import PageContainer from "@/components/PageContainer";
+import { Upload } from "lucide-react";
 
 export default function LosslessPage() {
     const [file, setFile] =
@@ -53,15 +54,21 @@ export default function LosslessPage() {
 
     return (
         <PageContainer
-            title="Lossless Compression"
-            description="Compress image without visible quality loss."
         >
             <div className="card upload-card">
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFile}
-                />
+                <label className="cursor-pointer">
+                    <div className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 transition px-5 py-3 rounded-xl text-white font-medium shadow-sm">
+                        <Upload size={18} />
+                        Choose Image
+                    </div>
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFile}
+                        className="hidden"
+                    />
+                </label>
 
                 {preview && (
                     <img
