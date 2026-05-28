@@ -123,8 +123,6 @@ export default function CapturePhotoPage() {
 
     return (
         <PageContainer
-            title="Camera Studio"
-            description="Capture high-quality photos directly from your browser."
         >
             <div className="grid lg:grid-cols-2 gap-8 mt-8">
                 {/* Camera */}
