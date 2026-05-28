@@ -42,10 +42,7 @@ const tools = [
 
 export default function HomePage() {
   return (
-    <PageContainer
-      title="Image Tools"
-      description="Choose a tool below"
-    >
+    <PageContainer>
       <div className="tools-grid">
         {tools.map((tool) => (
           <ToolCard
