@@ -115,9 +115,7 @@ export default function CropImagePage() {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    onChange={
-                                        handleFileChange
-                                    }
+                                    onChange={handleFileChange}
                                     className="hidden"
                                 />
                             </label>
