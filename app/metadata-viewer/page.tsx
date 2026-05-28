@@ -3,6 +3,7 @@
 import { useState } from "react";
 import EXIF from "exif-js";
 import PageContainer from "@/components/PageContainer";
+import { Upload } from "lucide-react";
 
 export default function MetadataPage() {
     const [preview, setPreview] =
@@ -114,16 +115,22 @@ export default function MetadataPage() {
 
     return (
         <PageContainer
-            title="Metadata Viewer"
-            description="View image EXIF metadata."
         >
             <div className="metadata-layout">
                 <div className="card">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFile}
-                    />
+                    <label className="cursor-pointer">
+                        <div className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 transition px-5 py-3 rounded-xl text-white font-medium shadow-sm">
+                            <Upload size={18} />
+                            Choose Image
+                        </div>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFile}
+                            className="hidden"
+                        />
+                    </label>
 
                     {preview && (
                         <img
