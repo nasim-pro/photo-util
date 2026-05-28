@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PageContainer from "@/components/PageContainer";
+import { Upload } from "lucide-react";
 
 export default function LossyPage() {
     const [file, setFile] =
@@ -103,15 +104,21 @@ export default function LossyPage() {
 
     return (
         <PageContainer
-            title="Lossy Compression"
-            description="Compress images with adjustable quality."
         >
             <div className="card upload-card">
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFile}
-                />
+                <label className="cursor-pointer">
+                    <div className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 transition px-5 py-3 rounded-xl text-white font-medium shadow-sm">
+                        <Upload size={18} />
+                        Choose Image
+                    </div>
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFile}
+                        className="hidden"
+                    />
+                </label>
 
                 {preview && (
                     <img
