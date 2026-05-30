@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { appConfig } from "../config";
 
@@ -9,9 +9,20 @@ export default function Navbar() {
             <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                 <Link
                     href={appConfig.links.home}
-                    className="font-bold text-xl tracking-tight"
+                    className="flex items-center gap-3"
                 >
-                    {appConfig.name}
+                    <Image
+                        src="/images/done-log/donelogLogo.png"
+                        alt="DoneLog Logo"
+                        width={40}
+                        height={40}
+                        priority
+                        className="rounded-lg object-contain"
+                    />
+
+                    <span className="font-bold text-xl tracking-tight text-gray-900">
+                        {appConfig.name}
+                    </span>
                 </Link>
 
                 <div className="flex items-center gap-6 text-sm font-medium text-gray-700">
