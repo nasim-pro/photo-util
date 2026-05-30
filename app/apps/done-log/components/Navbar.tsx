@@ -11,14 +11,16 @@ export default function Navbar() {
                     href={appConfig.links.home}
                     className="flex items-center gap-3"
                 >
-                    <Image
-                        src="/images/done-log/donelogLogo.png"
-                        alt="DoneLog Logo"
-                        width={40}
-                        height={40}
-                        priority
-                        className="rounded-lg object-contain"
-                    />
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 shadow-sm">
+                        <Image
+                            src="/images/done-log/donelogLogo.png"
+                            alt="DoneLog Logo"
+                            width={28}
+                            height={28}
+                            priority
+                            className="object-contain"
+                        />
+                    </div>
 
                     <span className="font-bold text-xl tracking-tight text-gray-900">
                         {appConfig.name}
